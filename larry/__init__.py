@@ -5,6 +5,7 @@
 # Copyright 2015 Neil Freeman
 # all rights reserved
 import argparse
+import os.path
 from . import larry
 from . import hasher
 
@@ -28,10 +29,10 @@ def main():
                         help='higher values walk the film more carefully')
 
     parser.add_argument('-f', '--format', choices=format_choices, default='mp4',
-                        type=str, help='output format [default is mp4]')
+                        type=str, help='output format [default: mp4]')
 
     parser.add_argument('-o', '--output', default=None, type=str,
-                        help='save output file here [default is tmp]')
+                        help='save output file here [default: stdout]')
 
     args = parser.parse_args()
 
@@ -48,15 +49,12 @@ def main():
 
     # Save the file to a specific location or just a tmp file
     if args.output:
-        dst = args.output
-
-        if dst[-3:] not in format_choices:
-            dst = dst + '.' + args.format
+        # enforce the proper file suffix
+        dst = os.path.splitext(args.output)[0] + os.path.extsep + args.format
     else:
         dst = '/dev/stdout'
 
-    # Writing to an io object doesn't work because moviepy is just a wrapper for ffpmeg
-    # Write either gif or video
+    # Write to file
     if dst[-3:] == 'mp4':
         clip.write_videofile(dst, verbose=False)
     else:

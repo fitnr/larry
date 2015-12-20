@@ -24,7 +24,7 @@ optional arguments:
   -f {gif,mp4}, --format {gif,mp4}
                         output format [default is mp4]
   -o OUTPUT, --output OUTPUT
-                        save output file here [default is tmp]
+                        save output file here [default: stdout]
 ````
 
 ## License
